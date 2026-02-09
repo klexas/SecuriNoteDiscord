@@ -17,7 +17,13 @@ const getDefaultNotebookSettings = (user:string): INotebookSettings | null => {
     return settings;
 }
 
+const clearDefaultNotebookSettings = (user:string) => {
+    delete settingCollection[user];
+    console.log(`Default notebook settings cleared for user ${user}`);
+}
+
 export const UserServices = {
     setDefaultNotebookSettings,
-    getDefaultNotebookSettings
+    getDefaultNotebookSettings,
+    clearDefaultNotebookSettings
 }
