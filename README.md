@@ -1,15 +1,72 @@
 # securinotediscord
 
-To install dependencies:
+SecuriNoteDiscord is a small Discord bot that integrates with securinote.com to fetch and search encrypted notebooks. It provides a set of slash commands so Discord users can retrieve and search notebook content and configure per-user notebook defaults.
+
+### Key features
+- Fetch and decrypt notebooks from the Securinote API (client-side decryption using a user-provided key).
+- Search notebook contents and return matched results directly in Discord.
+- Allow users to set default notebook options (ID and key) to simplify repeated use.
+
+### Quick start
+1. Install dependencies:
 
 ```bash
 bun install
 ```
 
-To run:
+2. Run the bot:
 
 ```bash
 bun run index.ts
 ```
 
-This project was created using `bun init` in bun v1.3.9. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+### Using the bot
+
+The bot provides the following slash commands in Discord:
+
+**`/ping`**
+- Simple test command to check if the bot is responsive
+- Returns "I'm here!" to confirm the bot is working
+
+**`/setnotebooksettings <name> <key>`**
+- Sets default notebook settings for your user
+- Required parameters:
+  - `name`: The ID/name of your Securinote notebook
+  - `key`: Your notebook's decryption key
+- Example: `/setnotebooksettings my-notebook-id my-secret-key`
+- Note: Settings are stored in server memory and will be lost when the bot restarts
+
+**`/getnotebook [name] [key]`**
+- Retrieves and displays the full content of a notebook
+- Optional parameters (if not provided, uses your default settings):
+  - `name`: Notebook ID to retrieve
+  - `key`: Decryption key for the notebook
+- Example: `/getnotebook` (uses defaults) or `/getnotebook specific-notebook specific-key`
+- Large notebooks are split into multiple messages
+
+**`/searchnotebook <search> [name] [key]`**
+- Searches for specific content within a notebook
+- Required parameter:
+  - `search`: Text to search for in the notebook content
+- Optional parameters (if not provided, uses your default settings):
+  - `name`: Notebook ID to search in
+  - `key`: Decryption key for the notebook
+- Example: `/searchnotebook "password" my-notebook my-key`
+- Returns all lines containing the search term
+
+Project layout (important files)
+- Entry point: `src/index.ts`
+- Command registration: `src/deployCommands.ts`
+- Commands: `src/commands/getNotebook.ts`, `src/commands/searchNotebook.ts`, `src/commands/setNotebookSettings.ts`, `src/commands/ping.ts`
+- Utilities: `src/utils/encryption.ts`, `src/utils/userServices.ts`
+- Types/models: `src/models/INotebook.ts`, `src/models/INotebookSettings.ts`, `src/models/ICommand.ts`
+
+### Configuration
+- Core configuration values (API URL, Discord credentials) live in `src/config.ts`. Provide required credentials and API endpoints before running.
+
+### Security and data handling notes
+- Decryption: notebook contents are decrypted client-side using the key supplied by the user. The project does not transmit decrypted contents to external services beyond Discord messages where appropriate.
+- **Default notebook options storage: if a user sets default notebook options via the bot (for convenience), that information is stored in memory inside the running server process. This means defaults persist only while the bot process is running and will be lost on restart. Review `src/utils/userServices.ts` to change persistence behavior before deploying to production.**
+
+*Why this matters for securinote.com
+This integration enables users to access and search their Securinote notebooks from within Discord while keeping decryption keys under user control. The bot is intended as a convenience layer for interacting with Securinote content in collaborative contexts.*

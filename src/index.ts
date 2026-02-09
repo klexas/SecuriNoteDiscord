@@ -29,23 +29,8 @@ client.on("interactionCreate", async (interaction) => {
   }
 });
 
-client.login(config.DISCORD_TOKEN);
-
-Bun.serve({
-  port: 5555,
-  fetch(req) { 
-    return new Response("Hello world!");
-  },
-  routes: {
-    "/discord": {
-      POST(data:any) {
-        console.log("Received a POST request at /discord");
-        return new Response("Hello world!");
-      },
-        GET() {
-        console.log("Received a GET request at /discord");
-        return new Response("Hello world!");
-        }
-    },
-  },
+client.on("presenceUpdate", (oldPresence, newPresence) => {
+  console.log(`Presence updated for user ${newPresence.userId}: ${oldPresence?.status} -> ${newPresence.status}`);
 });
+
+client.login(config.DISCORD_TOKEN);
