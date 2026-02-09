@@ -2,6 +2,10 @@
 
 SecuriNoteDiscord is a small Discord bot that integrates with securinote.com to fetch and search encrypted notebooks. It provides a set of slash commands so Discord users can retrieve and search notebook content and configure per-user notebook defaults.
 
+# READ BEFORE
+***This discord bot is intended for convenience and not security, any data that the bot posts to your discord server/guild will be sent to discord servers in an unencrypted manor as a standard message. 
+Be aware that discord stores messages on their servers negating the main feature of Securinote.com and therefore this bot may not be the best option for you.***
+
 ### Key features
 - Fetch and decrypt notebooks from the Securinote API (client-side decryption using a user-provided key).
 - Search notebook contents and return matched results directly in Discord.
