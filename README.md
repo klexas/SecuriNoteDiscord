@@ -36,6 +36,22 @@ The bot provides the following slash commands in Discord:
 - Example: `/setnotebooksettings my-notebook-id my-secret-key`
 - Note: Settings are stored in server memory and will be lost when the bot restarts
 
+**`/clearsettings`**
+- Clears your default notebook settings
+- No parameters required
+- Example: `/clearsettings`
+- Removes any previously saved default notebook ID and key for your user
+
+**`/addtonotebook <content> [name] [key]`**
+- Adds new content to an existing notebook
+- Required parameter:
+  - `content`: Text content to append to the notebook
+- Optional parameters (if not provided, uses your default settings):
+  - `name`: Notebook ID to add content to
+  - `key`: Decryption key for the notebook
+- Example: `/addtonotebook "New note entry"` (uses defaults) or `/addtonotebook "New entry" my-notebook my-key`
+- Content is appended to the end of the notebook with a newline separator
+
 **`/getnotebook [name] [key]`**
 - Retrieves and displays the full content of a notebook
 - Optional parameters (if not provided, uses your default settings):
@@ -57,7 +73,7 @@ The bot provides the following slash commands in Discord:
 Project layout (important files)
 - Entry point: `src/index.ts`
 - Command registration: `src/deployCommands.ts`
-- Commands: `src/commands/getNotebook.ts`, `src/commands/searchNotebook.ts`, `src/commands/setNotebookSettings.ts`, `src/commands/ping.ts`
+- Commands: `src/commands/getNotebook.ts`, `src/commands/searchNotebook.ts`, `src/commands/setNotebookSettings.ts`, `src/commands/clearSettings.ts`, `src/commands/addToNotebook.ts`, `src/commands/ping.ts`
 - Utilities: `src/utils/encryption.ts`, `src/utils/userServices.ts`
 - Types/models: `src/models/INotebook.ts`, `src/models/INotebookSettings.ts`, `src/models/ICommand.ts`
 
